@@ -16,4 +16,4 @@ if [ ! -e "$OAG_JAR" ]; then
 fi
 
 echo "Generating the server module"
-java -jar "$OAG_JAR" generate --git-user-id "$GIT_USER" --git-repo-id "$GIT_PROJECT" -i "$THIS_DIR/openapi.yaml" -g php-symfony -o php-server-bundle
+java -jar "$OAG_JAR" generate --git-user-id "$GIT_USER_ID" --git-repo-id "$GIT_PROJECT" -i "$THIS_DIR/openapi.yaml" -g php-symfony -o php-server-bundle
