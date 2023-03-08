@@ -27,6 +27,9 @@ paths:
                 type: array
                 items:
                   type: object
+                  required:
+                    - timestamp
+                    - text
                   properties:
                     timestamp:
                       type: string
