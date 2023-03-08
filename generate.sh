@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ -L "$0" ] && [ -x $(which readlink) ]; then
+if [ -L "$0" ] && [ -x "$(which readlink)" ]; then
 	THIS_FILE="$(readlink -mn "$0")"
 else
 	THIS_FILE="$0"
