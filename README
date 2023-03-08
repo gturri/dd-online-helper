@@ -1,1 +1,14 @@
+What is there
+=============
 Nothing useful here: just a pet project to experiment with some OpenApi related tooling.
+
+How to launch stuff
+===================
+This probably requires at least PHP 8
+
+  ./generate.sh
+  cd php-server
+  composer install
+
+  # See https://symfony.com/download to get the symfony binary
+  symfony server:start --no-tls
