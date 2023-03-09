@@ -9,6 +9,7 @@ This probably requires at least PHP 8
   ./generate.sh
   cd php-server
   composer install
+  php bin/console doctrine:migrations:migrate
 
   # See https://symfony.com/download to get the symfony binary
   symfony server:start --no-tls
