@@ -7,11 +7,11 @@ paths:
     get:
       summary: Get the last events
       parameters:
-        - name: after
+        - name: afterId
           in: query
           required: false
           schema:
-            type: string
+            type: integer
         - name: room
           in: query
           required: true

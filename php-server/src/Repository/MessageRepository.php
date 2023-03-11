@@ -16,51 +16,75 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MessageRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Message::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, Message::class);
+	}
 
-    public function save(Message $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+	public function save(Message $entity, bool $flush = false): void
+	{
+		$this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+	}
 
-    public function remove(Message $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+	public function remove(Message $entity, bool $flush = false): void
+	{
+		$this->getEntityManager()->remove($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+	}
 
-//    /**
-//     * @return Message[] Returns an array of Message objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+	public function findAllInRoomMoreRecentThan(int $afterId, string $room) {
+		$query = $this->getEntityManager()->createQuery(
+			'SELECT m
+			FROM \App\Entity\Message m
+			WHERE m.id > :id
+			AND m.room = :room
+			ORDER BY m.timestamp DESC'
+		)->setParameter('id', $afterId)
+		->setParameter('room', $room);
 
-//    public function findOneBySomeField($value): ?Message
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+		return $query->getResult();
+	}
+
+	public function findAllInRoom(string $room) {
+		$query = $this->getEntityManager()->createQuery(
+			'SELECT m
+			FROM \App\Entity\Message m
+			AND m.room = :room
+			ORDER BY m.timestamp DESC'
+		)->setParameter('room', $room);
+
+		return $query->getResult();
+	}
+
+	//    /**
+	//     * @return Message[] Returns an array of Message objects
+	//     */
+	//    public function findByExampleField($value): array
+	//    {
+	//        return $this->createQueryBuilder('m')
+	//            ->andWhere('m.exampleField = :val')
+	//            ->setParameter('val', $value)
+	//            ->orderBy('m.id', 'ASC')
+	//            ->setMaxResults(10)
+	//            ->getQuery()
+	//            ->getResult()
+	//        ;
+	//    }
+
+	//    public function findOneBySomeField($value): ?Message
+	//    {
+	//        return $this->createQueryBuilder('m')
+	//            ->andWhere('m.exampleField = :val')
+	//            ->setParameter('val', $value)
+	//            ->getQuery()
+	//            ->getOneOrNullResult()
+	//        ;
+	//    }
 }
