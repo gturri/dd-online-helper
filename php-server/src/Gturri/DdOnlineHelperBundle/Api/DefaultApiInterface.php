@@ -8,11 +8,13 @@ use OpenAPI\Server\Model\DicePostRequest;
 use OpenAPI\Server\Model\LastEventsGet200ResponseInner;
 
 use App\Entity\Message;
+use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DefaultApi implements DefaultApiInterface {
-	public function __construct(EntityManagerInterface $entityManager) {
+	public function __construct(EntityManagerInterface $entityManager, MessageRepository $messageRepository) {
 		$this->entityManager = $entityManager;
+		$this->messageRepository = $messageRepository;
 	}
 
 	public function dicePost(?DicePostRequest $dicePostRequest, int &$responseCode, array &$responseHeaders): void {
@@ -40,13 +42,22 @@ class DefaultApi implements DefaultApiInterface {
 	}
 
 
-	public function lastEventsGet(string $room, ?string $after, int &$responseCode, array &$responseHeaders): array|object|null {
-		// TODO
-		$responseCode = 200;
-		$event = new LastEventsGet200ResponseInner();
-		$event->setTimestamp(new \DateTime());
-		$event->setText("it works");
-		return [$event];
+	public function lastEventsGet(string $room, ?\DateTime $after, int &$responseCode, array &$responseHeaders): array|object|null {
+		$messages = array();
+		if (is_null($after)) {
+			$messages = $this->messageRepository->findAll(); // TODO: filter on room
+		} else {
+			$messages = $this->messageRepository->findAllMoreRecentThan($after, $room);
+		}
+
+		$result = array();
+		foreach($messages as $m) {
+			$event = new LastEventsGet200ResponseInner();
+			$event->setTimestamp(\DateTime::createFromImmutable($m->getTimestamp()));
+			$event->setText($m->getMessage());
+			$result []= $event;
+		}
+		return $result;
 	}
 
 }
