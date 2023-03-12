@@ -57,6 +57,7 @@ class DefaultApi implements DefaultApiInterface {
 			$event = new LastEventsGet200ResponseInner();
 			$event->setTimestamp(\DateTime::createFromImmutable($m->getTimestamp()));
 			$event->setText($m->getMessage());
+			$event->setId($m->getId());
 			$result []= $event;
 		}
 		return $result;

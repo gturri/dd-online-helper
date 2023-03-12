@@ -28,9 +28,12 @@ paths:
                 items:
                   type: object
                   required:
+                    - id
                     - timestamp
                     - text
                   properties:
+                    id:
+                      type: integer
                     timestamp:
                       type: string
                       format: date-time
