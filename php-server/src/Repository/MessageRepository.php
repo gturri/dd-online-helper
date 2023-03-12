@@ -45,7 +45,7 @@ class MessageRepository extends ServiceEntityRepository
 			FROM \App\Entity\Message m
 			WHERE m.id > :id
 			AND m.room = :room
-			ORDER BY m.timestamp DESC'
+			ORDER BY m.id DESC'
 		)->setParameter('id', $afterId)
 		->setParameter('room', $room);
 
