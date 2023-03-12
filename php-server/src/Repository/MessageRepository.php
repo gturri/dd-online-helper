@@ -53,14 +53,7 @@ class MessageRepository extends ServiceEntityRepository
 	}
 
 	public function findAllInRoom(string $room) {
-		$query = $this->getEntityManager()->createQuery(
-			'SELECT m
-			FROM \App\Entity\Message m
-			AND m.room = :room
-			ORDER BY m.timestamp DESC'
-		)->setParameter('room', $room);
-
-		return $query->getResult();
+		return $this->findBy(['room' => $room], ['id' => 'DESC'] );
 	}
 
 	//    /**
