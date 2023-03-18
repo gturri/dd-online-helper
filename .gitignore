@@ -1,3 +1,4 @@
 bin
 .*sw*
 php-server-bundle
+typescript-angular/
