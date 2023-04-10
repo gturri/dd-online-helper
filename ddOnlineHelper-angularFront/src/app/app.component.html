@@ -1,1 +1,7 @@
-<div>{{this.data}}</div>
+<h2>Last events</h2>
+
+<ul>
+<li *ngFor="let event of this.events">
+{{event.timestamp}}: {{event.text}}
+</li>
+</ul>

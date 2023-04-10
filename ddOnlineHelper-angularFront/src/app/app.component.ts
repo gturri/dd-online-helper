@@ -14,21 +14,20 @@ import { catchError, retry } from 'rxjs/operators';
 export class AppComponent {
 	title = 'ddOnlineHelper-angularFront';
 	client: DefaultService;
-	data: Array<LastEventsGet200ResponseInner>;
+	events: Array<LastEventsGet200ResponseInner>;
 
 	constructor(private http: DefaultService) {
 		this.client = http;
-		this.data = [];
-		this.getData();
+		this.events = [];
+		this.getEvents();
 	}
 
-	getData() {
+	getEvents() {
 		console.log("tempGT: in getData");
 		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.client.lastEventsGet("myroom");
-		obs.subscribe(data => {
-				this.data = data;
-				console.log("tempGT: got " + data);
-				setTimeout(() => {this.getData()}, 1000);
+		obs.subscribe(events => {
+				this.events = events;
+				setTimeout(() => {this.getEvents()}, 1000);
 
 		});
 	}
