@@ -30,7 +30,7 @@ class DefaultApi implements DefaultApiInterface {
 	}
 
 	private function generateDiceMessage(DicePostRequest $request) {
-		$result = "{$request->getPlayer()} threw dice:\n";
+		$result = "{$request->getPlayer()} rolled dice:\n";
 
 		foreach($request->getDice() as $dice){
 			$result .= "{$dice->getNumberOfDice()}D{$dice->getNumberOfSides()}:";
