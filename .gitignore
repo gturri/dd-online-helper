@@ -1,4 +1,12 @@
 bin
 .*sw*
 php-server-bundle
-typescript-angular/
+angular-client/
+php-server/public/3rdpartylicenses.txt
+php-server/public/favicon.ico
+php-server/public/index.html
+php-server/public/main.*
+php-server/public/polyfills.*
+php-server/public/runtime.*
+php-server/public/styles.*
+
