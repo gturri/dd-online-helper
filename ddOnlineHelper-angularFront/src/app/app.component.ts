@@ -25,10 +25,16 @@ export class AppComponent {
 	getEvents() {
 		console.log("tempGT: in getData");
 		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.client.lastEventsGet("myroom");
-		obs.subscribe(events => {
-				this.events = events;
-				setTimeout(() => {this.getEvents()}, 1000);
-
+		let self = this;
+		obs.subscribe({
+				next(events) {
+					self.events = events
+					setTimeout(() => {self.getEvents()}, 1000);
+					},
+				error(err) {
+					console.error("Failed to get data: " + err);
+					setTimeout(() => {self.getEvents()}, 1000);
+				}
 		});
 	}
 }
