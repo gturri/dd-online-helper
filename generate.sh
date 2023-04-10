@@ -32,8 +32,8 @@ popd
 echo "building the front"
 pushd "$FRONT_DIR"
 npm link ddOnlineHelperClient
+./"$FRONT_DIR/build.sh"
 popd
-# TODO
 
 echo "Generating the server module"
 java -jar "$OAG_JAR" generate --git-user-id "$GIT_USER_ID" --git-repo-id "$GIT_PROJECT" -i "$OAS_FILE" -g php-symfony -o "$THIS_DIR/php-server-bundle"
