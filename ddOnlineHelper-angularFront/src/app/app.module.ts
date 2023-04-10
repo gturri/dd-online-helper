@@ -6,8 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
 export function apiConfigFactory (): Configuration {
+  let href = window.location.href;
   const params: ConfigurationParameters = {
-    basePath: "http://localhost:8000"
+    basePath: href.substr(0, href.length-1) // remove trailing slash
   }
   return new Configuration(params);
 }
