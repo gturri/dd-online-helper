@@ -8,7 +8,8 @@ THIS_DIR="$(dirname "$THIS_FILE")"
 BIN_DIR="$THIS_DIR/bin"
 OAG_JAR="$BIN_DIR/openapi-generator-cli.jar"
 OAS_FILE="$THIS_DIR/openapi.yaml"
-CLIENT_DIR="$THIS_DIR/angular-client"
+GENERATED_DIR="$THIS_DIR/generated"
+CLIENT_DIR="$GENERATED_DIR/angular-client"
 FRONT_DIR="$THIS_DIR/ddOnlineHelper-angularFront"
 GIT_USER_ID=gturri
 GIT_PROJECT=dd-online-helper
@@ -36,4 +37,4 @@ npm link ddOnlineHelperClient
 popd
 
 echo "Generating the server module"
-java -jar "$OAG_JAR" generate --git-user-id "$GIT_USER_ID" --git-repo-id "$GIT_PROJECT" -i "$OAS_FILE" -g php-symfony -o "$THIS_DIR/php-server-bundle"
+java -jar "$OAG_JAR" generate --git-user-id "$GIT_USER_ID" --git-repo-id "$GIT_PROJECT" -i "$OAS_FILE" -g php-symfony -o "$GENERATED_DIR/php-server-bundle"

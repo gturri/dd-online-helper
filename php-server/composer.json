@@ -5,7 +5,7 @@
     "prefer-stable": true,
     "repositories": [{
         "type": "path",
-        "url": "../php-server-bundle"
+        "url": "../generated/php-server-bundle"
     }],
     "require": {
         "php": ">=8.1",
