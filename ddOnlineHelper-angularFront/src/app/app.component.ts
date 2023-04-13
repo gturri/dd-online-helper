@@ -16,6 +16,7 @@ export class AppComponent {
 	title = 'ddOnlineHelper-angularFront';
 	client: DefaultService;
 	events: Array<LastEventsGet200ResponseInner>;
+	rollFormBeingProcessed = false;
 
 	rollForm = this.formBuilder.group({
 		numberOfDice: '',
@@ -47,14 +48,17 @@ export class AppComponent {
 			}]
 		};
 		let obs: Observable<any> = this.client.dicePost(payload);
+		this.rollFormBeingProcessed = true;
 		let self = this;
 		obs.subscribe({
 			next(resp) {
 				console.log("successfully rolled the dice");
 				// TODO: reload messages asap
 				self.rollForm.reset();
+				self.rollFormBeingProcessed = false;
 			},
 			error(err) {
+				self.rollFormBeingProcessed = false;
 				console.error("Failed to roll the dice", err);
 				alert("Failed to roll the dice (you may want to retry)");
 			}

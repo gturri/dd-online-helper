@@ -15,7 +15,7 @@
     <input id="numberOfSides" type="number" min="1" formControlName="numberOfSides">
   </div>
 
-	<button class="button" type="submit">Roll the dice!</button>
+	<button class="button" type="submit" [disabled]="rollFormBeingProcessed">Roll the dice!</button>
 </form>
 
 <ul>
