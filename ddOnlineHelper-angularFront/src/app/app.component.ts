@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DefaultService, LastEventsGet200ResponseInner, DicePostRequest } from 'ddOnlineHelperClient';
+import { CoordinateService } from './coordinate.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
@@ -14,7 +15,6 @@ import { catchError, retry } from 'rxjs/operators';
 })
 export class AppComponent {
 	title = 'ddOnlineHelper-angularFront';
-	client: DefaultService;
 	events: Array<LastEventsGet200ResponseInner>;
 	rollFormBeingProcessed = false;
 
@@ -23,8 +23,11 @@ export class AppComponent {
 		numberOfSides: ''
 	});
 
-	constructor(private http: DefaultService, private formBuilder: FormBuilder) {
-		this.client = http;
+	constructor(
+			private http: DefaultService,
+			private formBuilder: FormBuilder,
+			private coordinateService: CoordinateService
+			) {
 		this.events = [];
 		this.getEvents();
 	}
@@ -40,14 +43,14 @@ export class AppComponent {
 			return;
 		}
 		let payload: DicePostRequest = {
-			room: "myroom",
-			player: "toto",
+			room: this.coordinateService.getRoom(),
+			player: this.coordinateService.getPlayer(),
 			dice: [{
 				numberOfDice: parseInt(formValues.numberOfDice),
 				numberOfSides: parseInt(formValues.numberOfSides)
 			}]
 		};
-		let obs: Observable<any> = this.client.dicePost(payload);
+		let obs: Observable<any> = this.http.dicePost(payload);
 		this.rollFormBeingProcessed = true;
 		let self = this;
 		obs.subscribe({
@@ -66,8 +69,7 @@ export class AppComponent {
 	}
 
 	getEvents() {
-		console.log("tempGT: in getData");
-		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.client.lastEventsGet("myroom");
+		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.http.lastEventsGet(this.coordinateService.getRoom());
 		let self = this;
 		obs.subscribe({
 				next(events) {
