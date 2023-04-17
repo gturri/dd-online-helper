@@ -3,14 +3,17 @@ import { ApiModule, Configuration, ConfigurationParameters } from 'ddOnlineHelpe
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { StartComponent } from './start/start.component';
+import { RoomComponent } from './room/room.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 export function apiConfigFactory (): Configuration {
-	let href = window.location.href;
+	let host = window.location.host;
+	let protocol = window.location.protocol;
 	const params: ConfigurationParameters = {
-basePath: href.substr(0, href.length-1) // remove trailing slash
+		basePath: protocol + "//" + host
 	}
 	return new Configuration(params);
 }
@@ -18,14 +21,19 @@ basePath: href.substr(0, href.length-1) // remove trailing slash
 @NgModule({
 	declarations: [
 		AppComponent,
-		StartComponent
+		RoomComponent,
+		WelcomeComponent
 	],
 	imports: [
 		BrowserModule,
 		ApiModule.forRoot(apiConfigFactory),
 		HttpClientModule,
 		FormsModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		RouterModule.forRoot([
+			{ path: '', component: WelcomeComponent},
+			{ path: 'room', component: RoomComponent},
+		])
 	],
 	providers: [],
 	bootstrap: [AppComponent]
