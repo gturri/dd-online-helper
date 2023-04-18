@@ -17,8 +17,8 @@ export class RoomComponent {
 	rollFormBeingProcessed = false;
 
 	rollForm = this.formBuilder.group({
-		numberOfDice: '',
-		numberOfSides: ''
+		numberOfDice: '1',
+		numberOfSides: '6'
 	});
 
 	constructor(
