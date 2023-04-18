@@ -32,7 +32,7 @@ export function apiConfigFactory (): Configuration {
 		ReactiveFormsModule,
 		RouterModule.forRoot([
 			{ path: '', component: WelcomeComponent},
-			{ path: 'room', component: RoomComponent},
+			{ path: 'room/:roomId', component: RoomComponent},
 		])
 	],
 	providers: [],

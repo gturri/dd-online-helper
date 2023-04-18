@@ -34,9 +34,6 @@ export class WelcomeComponent {
 		}
 
 		this.coordinateService.setPlayer(formValues.player);
-		this.coordinateService.setRoom(formValues.room);
-
-		this.router.navigate(['room']);
-
+		this.router.navigate(['room', formValues.room]);
 	}
 }

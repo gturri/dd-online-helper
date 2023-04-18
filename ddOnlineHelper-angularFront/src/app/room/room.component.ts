@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { DefaultService, LastEventsGet200ResponseInner, DicePostRequest } from 'ddOnlineHelperClient';
@@ -12,10 +13,11 @@ import { catchError, retry } from 'rxjs/operators';
 	templateUrl: './room.component.html',
 	styleUrls: ['./room.component.css']
 })
-export class RoomComponent {
+export class RoomComponent implements OnInit {
 	events: Array<LastEventsGet200ResponseInner>;
 	rollFormBeingProcessed = false;
 	timeoutId = 0;
+	room = "";
 
 	rollForm = this.formBuilder.group({
 		numberOfDice: '1',
@@ -25,10 +27,21 @@ export class RoomComponent {
 	constructor(
 			private http: DefaultService,
 			private formBuilder: FormBuilder,
-			private coordinateService: CoordinateService
+			private coordinateService: CoordinateService,
+			private route: ActivatedRoute,
+			private router: Router
 			) {
 		this.events = [];
 		this.getEvents();
+	}
+
+	ngOnInit() {
+		const room = this.route.snapshot.paramMap.get('roomId');
+		if ( ! room ) {
+			this.router.navigate(['']);
+		} else {
+		  this.room = room;
+		}
 	}
 
 	onSubmit(): void {
@@ -42,7 +55,7 @@ export class RoomComponent {
 			return;
 		}
 		let payload: DicePostRequest = {
-			room: this.coordinateService.getRoom(),
+			room: this.room,
 			player: this.coordinateService.getPlayer(),
 			dice: [{
 				numberOfDice: parseInt(formValues.numberOfDice),
@@ -69,7 +82,7 @@ export class RoomComponent {
 
 	getEvents() {
 		console.log("Going to fetch events");
-		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.http.lastEventsGet(this.coordinateService.getRoom());
+		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.http.lastEventsGet(this.room);
 		clearTimeout(this.timeoutId);
 		let self = this;
 		obs.subscribe({
