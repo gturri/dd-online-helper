@@ -15,6 +15,7 @@ import { catchError, retry } from 'rxjs/operators';
 export class RoomComponent {
 	events: Array<LastEventsGet200ResponseInner>;
 	rollFormBeingProcessed = false;
+	timeoutId = 0;
 
 	rollForm = this.formBuilder.group({
 		numberOfDice: '1',
@@ -54,7 +55,7 @@ export class RoomComponent {
 		obs.subscribe({
 			next(resp) {
 				console.log("successfully rolled the dice");
-				// TODO: reload messages asap
+				self.getEvents();
 				self.rollForm.reset();
 				self.rollFormBeingProcessed = false;
 			},
@@ -67,12 +68,14 @@ export class RoomComponent {
 	}
 
 	getEvents() {
+		console.log("Going to fetch events");
 		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.http.lastEventsGet(this.coordinateService.getRoom());
+		clearTimeout(this.timeoutId);
 		let self = this;
 		obs.subscribe({
 				next(events) {
 					self.events = events
-					setTimeout(() => {self.getEvents()}, 10000);
+					self.timeoutId = setTimeout(() => {self.getEvents()}, 10000);
 				},
 				error(err) {
 					console.error("Failed to get data: " + err);
