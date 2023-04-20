@@ -32,16 +32,30 @@ export class RoomComponent implements OnInit {
 			private router: Router
 			) {
 		this.events = [];
+		if ( ! coordinateService.getPlayer() ) {
+			// This may occur if the user put the direct url to this room in her browser
+			console.log("Unknown player, we're going to main page.");
+			this.navigateToMainPage();
+		}
 	}
 
 	ngOnInit() {
 		const room = this.route.snapshot.paramMap.get('roomId');
 		if ( ! room ) {
-			this.router.navigate(['']);
+			// This should never occur because of how the router is setup,
+			// however angular requires that we handle this case.
+			// Anyway it probably makes sense to handle that case so this component works well
+			// even if we change the router rules in the future
+			console.error("unknown roomId. This should never occur. We're going to main page.");
+			this.navigateToMainPage();
 		} else {
 			this.room = room;
 			this.getEvents();
 		}
+	}
+
+	navigateToMainPage() {
+			this.router.navigate(['']);
 	}
 
 	onSubmit(): void {
