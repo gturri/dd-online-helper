@@ -68,9 +68,17 @@ export class RoomComponent implements OnInit {
 			alert("Number of sides must be filled");
 			return;
 		}
+		let player = this.coordinateService.getPlayer();
+		if ( ! player ) {
+			// We're trying to avoid letting unknown players in the room, but it could occur that the
+			// user becomes unknown afterwards (eg: if the underlying storage is changed)
+			console.log("unknown player tries to roll dice which is not allowed. Going to main page to identify the player");
+			this.navigateToMainPage();
+			return;
+		}
 		let payload: DicePostRequest = {
 			room: this.room,
-			player: this.coordinateService.getPlayer(),
+			player: player,
 			dice: [{
 				numberOfDice: parseInt(formValues.numberOfDice),
 				numberOfSides: parseInt(formValues.numberOfSides)
