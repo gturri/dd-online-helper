@@ -92,7 +92,7 @@ export class RoomComponent implements OnInit {
 				},
 				error(err) {
 					console.error("Failed to get data: " + err);
-					setTimeout(() => {self.getEvents()}, 1000);
+					self.timeoutId = setTimeout(() => {self.getEvents()}, 1000);
 				}
 		});
 	}
