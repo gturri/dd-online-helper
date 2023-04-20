@@ -32,7 +32,6 @@ export class RoomComponent implements OnInit {
 			private router: Router
 			) {
 		this.events = [];
-		this.getEvents();
 	}
 
 	ngOnInit() {
@@ -40,7 +39,8 @@ export class RoomComponent implements OnInit {
 		if ( ! room ) {
 			this.router.navigate(['']);
 		} else {
-		  this.room = room;
+			this.room = room;
+			this.getEvents();
 		}
 	}
 
@@ -81,14 +81,14 @@ export class RoomComponent implements OnInit {
 	}
 
 	getEvents() {
-		console.log("Going to fetch events");
-		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.http.lastEventsGet(this.room);
 		clearTimeout(this.timeoutId);
+		console.log("Going to fetch events for room " + this.room);
+		let obs: Observable<Array<LastEventsGet200ResponseInner>> = this.http.lastEventsGet(this.room);
 		let self = this;
 		obs.subscribe({
 				next(events) {
 					self.events = events
-					self.timeoutId = setTimeout(() => {self.getEvents()}, 10000);
+					self.timeoutId = setTimeout(() => {self.getEvents()}, 1000);
 				},
 				error(err) {
 					console.error("Failed to get data: " + err);
