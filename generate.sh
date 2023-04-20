@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 if [ -L "$0" ] && [ -x "$(which readlink)" ]; then
 	THIS_FILE="$(readlink -mn "$0")"
 else
