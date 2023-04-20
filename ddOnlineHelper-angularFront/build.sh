@@ -9,5 +9,5 @@ PHP_PUBLIC_PATH="$THIS_DIR/../php-server/public"
 
 cd "$THIS_DIR"
 ng build
-rm -f "$PHP_PUBLIC_PATH"/{index.html,main.*.js,polyfills.*.js,runtime.*.js,styles.*.css}
+rm -f "$PHP_PUBLIC_PATH"/{index.html,main.*.js,polyfills.*.js,runtime.*.js,styles.*.css,*map}
 cp dist/dd-online-helper-angular-front/* "$PHP_PUBLIC_PATH"
