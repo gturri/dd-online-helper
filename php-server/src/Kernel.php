@@ -24,10 +24,7 @@ class Kernel extends BaseKernel
 		return parent::handle($request, $type, $catch);
 	}
 
-	// TODO: it would probably be cleaner to instead move api endpoints behind some "/api" prefix
-	// so this function would not have to be updated every time another type of url is to be handled
-	// by the front
 	private function isRequestToBeHandledByTheFront(Request $request): bool {
-		return str_starts_with($request->server->get("PATH_INFO"), "/room");
+		return !str_starts_with($request->server->get("PATH_INFO"), "/api");
 	}
 }

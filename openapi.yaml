@@ -3,7 +3,7 @@ info:
   title: DD online helper
   version: 0.0.1
 paths:
-  /last-events:
+  /api/last-events:
     get:
       summary: Get the last events
       parameters:
@@ -41,7 +41,7 @@ paths:
                       type: string
                       minLength: 1
 
-  /dice:
+  /api/dice:
     post:
       summary: Throw some dice
       requestBody:

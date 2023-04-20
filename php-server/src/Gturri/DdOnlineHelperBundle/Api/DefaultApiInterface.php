@@ -4,8 +4,8 @@ namespace Gturri\DdOnlineHelperBundle\Api;
 
 use OpenAPI\Server\Api\DefaultApiInterface;
 
-use OpenAPI\Server\Model\DicePostRequest;
-use OpenAPI\Server\Model\LastEventsGet200ResponseInner;
+use OpenAPI\Server\Model\ApiDicePostRequest;
+use OpenAPI\Server\Model\ApiLastEventsGet200ResponseInner;
 
 use App\Entity\Message;
 use App\Repository\MessageRepository;
@@ -19,7 +19,7 @@ class DefaultApi implements DefaultApiInterface {
 		$this->logger = $logger;
 	}
 
-	public function dicePost(?DicePostRequest $dicePostRequest, int &$responseCode, array &$responseHeaders): void {
+	public function apiDicePost(?ApiDicePostRequest $dicePostRequest, int &$responseCode, array &$responseHeaders): void {
 		$message = new Message();
 		$message->setRoom($dicePostRequest->getRoom());
 		$message->setTimestamp(new \DateTimeImmutable());
@@ -29,7 +29,7 @@ class DefaultApi implements DefaultApiInterface {
 		$this->entityManager->flush();
 	}
 
-	private function generateDiceMessage(DicePostRequest $request) {
+	private function generateDiceMessage(ApiDicePostRequest $request) {
 		$result = "{$request->getPlayer()} rolled dice:\n";
 
 		foreach($request->getDice() as $dice){
@@ -43,7 +43,7 @@ class DefaultApi implements DefaultApiInterface {
 		return $result;
 	}
 
-	public function lastEventsGet(string $room, ?int $afterId, int &$responseCode, array &$responseHeaders): array|object|null {
+	public function apiLastEventsGet(string $room, ?int $afterId, int &$responseCode, array &$responseHeaders): array|object|null {
 		$this->logger->info("getting last events, afterId = {$afterId}");
 		$messages = array();
 		if (is_null($afterId)) {
@@ -54,7 +54,7 @@ class DefaultApi implements DefaultApiInterface {
 
 		$result = array();
 		foreach($messages as $m) {
-			$event = new LastEventsGet200ResponseInner();
+			$event = new ApiLastEventsGet200ResponseInner();
 			$event->setTimestamp(\DateTime::createFromImmutable($m->getTimestamp()));
 			$event->setText($m->getMessage());
 			$event->setId($m->getId());
