@@ -31,8 +31,8 @@ export function apiConfigFactory (): Configuration {
 		FormsModule,
 		ReactiveFormsModule,
 		RouterModule.forRoot([
-			{ path: '', component: WelcomeComponent},
 			{ path: 'room/:roomId', component: RoomComponent},
+			{ path: '**', component: WelcomeComponent},
 		])
 	],
 	providers: [],
