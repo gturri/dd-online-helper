@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { RoomComponent } from './room/room.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { RollDiceComponent } from './roll-dice/roll-dice.component';
 
 export function apiConfigFactory (): Configuration {
 	let host = window.location.host;
@@ -22,7 +23,8 @@ export function apiConfigFactory (): Configuration {
 	declarations: [
 		AppComponent,
 		RoomComponent,
-		WelcomeComponent
+		WelcomeComponent,
+		RollDiceComponent
 	],
 	imports: [
 		BrowserModule,

@@ -2,23 +2,7 @@
 
 <a [title]="'start page'" [routerLink]="'/'">Start page</a>
 
-<form [formGroup]="rollForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label for="numberOfDice">
-      Number of dice
-    </label>
-    <input id="numberOfDice" type="number" min="1" value="1" formControlName="numberOfDice">
-  </div>
-
-  <div>
-    <label for="numberOfSides">
-      Number of sides
-    </label>
-    <input id="numberOfSides" type="number" min="1" value="6" formControlName="numberOfSides">
-  </div>
-
-	<button class="button" type="submit" [disabled]="rollFormBeingProcessed">Roll the dice!</button>
-</form>
+<app-roll-dice [room]="room" (needToReloadEvenNotification)="getEvents()"></app-roll-dice>
 
 <ul>
 <li *ngFor="let event of this.events">
