@@ -33,7 +33,7 @@ popd
 echo "building the front"
 pushd "$FRONT_DIR"
 npm link ddOnlineHelperClient
-./"$FRONT_DIR/build.sh"
+./build.sh
 popd
 
 echo "Generating the server module"
