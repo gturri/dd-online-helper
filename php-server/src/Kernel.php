@@ -25,6 +25,19 @@ class Kernel extends BaseKernel
 	}
 
 	private function isRequestToBeHandledByTheFront(Request $request): bool {
-		return !str_starts_with($request->server->get("PATH_INFO"), "/api");
+		return !str_starts_with($this->uri($request), "/api");
+	}
+
+	private function uri(Request $request): string {
+		$pathInfo = $request->server->get("PATH_INFO");
+		if (!is_null($pathInfo)) {
+			return $pathInfo; // case of the symfony development server
+		}
+		$requestUri = $request->server->get("REQUEST_URI");
+		if (!is_null($requestUri)) {
+			return $requestUri; // case of apache2
+		}
+		throw new Exception("Can't find the uri called");
+
 	}
 }
