@@ -12,6 +12,15 @@ describe('template spec', () => {
 	it('Is redirected to welcome page if player is unknown', () => {
 		cy.visit(server + '/room/myroom')
 		isWelcomePage(cy);
+	}),
+
+	it('Can go directly to any room if user is already known', () => {
+		cy.visit(server);
+		moveToRoomAsPlayer(cy, "titi", "myroom");
+
+		cy.visit(server + '/room/anyroom');
+		cy.contains("titi");
+		cy.contains("anyroom");
 	})
 })
 
