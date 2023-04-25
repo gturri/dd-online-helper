@@ -12,7 +12,7 @@ import { CoordinateService } from '../coordinate.service';
 })
 export class WelcomeComponent {
 	welcomeForm = this.formBuilder.group({
-		player: '',
+		player: this.coordinateService.getPlayer() ?? '',
 		room: ''
 	});
 

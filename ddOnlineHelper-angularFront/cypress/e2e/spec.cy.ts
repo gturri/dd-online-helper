@@ -22,6 +22,16 @@ describe('template spec', () => {
 		cy.contains("titi");
 		cy.contains("anyroom");
 	})
+
+	it('Has player field pre-filled on welcome page if user is already known', () => {
+		cy.visit(server);
+		// Pre-condition
+		cy.get('[data-cy="player"]').should('not.have.value', 'titi');
+		moveToRoomAsPlayer(cy, "titi", "myroom");
+
+		cy.visit(server);
+		cy.get('[data-cy="player"]').should('have.value', 'titi');
+	})
 })
 
 function isWelcomePage(cy) {
