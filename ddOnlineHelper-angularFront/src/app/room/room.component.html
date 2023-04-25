@@ -1,5 +1,7 @@
 <h2>Last events</h2>
 
+<div>Welcome to room "{{this.room}}"</div>
+
 <a [title]="'start page'" [routerLink]="'/'">Start page</a>
 
 <app-roll-dice [room]="room" (needToReloadEvenNotification)="getEvents()"></app-roll-dice>

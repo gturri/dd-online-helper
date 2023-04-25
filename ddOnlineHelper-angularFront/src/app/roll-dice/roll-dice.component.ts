@@ -20,15 +20,20 @@ export class RollDiceComponent {
 		numberOfSides: '6'
 	});
 
+	player: string = "";
+
 	constructor(
 			private http: DefaultService,
 			private formBuilder: FormBuilder,
 			private coordinateService: CoordinateService,
 			private router: Router
 			) {
-		if ( ! coordinateService.getPlayer() ) {
+		const player = coordinateService.getPlayer();
+		if ( ! player ) {
 			console.log("Unknown player, we're going to main page.");
 			this.navigateToMainPage();
+		} else {
+			this.player = player;
 		}
 	}
 
@@ -46,17 +51,9 @@ export class RollDiceComponent {
 			alert("Number of sides must be filled");
 			return;
 		}
-		let player = this.coordinateService.getPlayer();
-		if ( ! player ) {
-			// We're trying to avoid letting unknown players in here, but it could occur that the
-			// user becomes unknown afterwards (eg: if the underlying storage is changed)
-			console.log("unknown player tries to roll dice which is not allowed. Going to main page to identify the player");
-			this.navigateToMainPage(); // TODO: fix this
-			return;
-		}
 		let payload: ApiDicePostRequest = {
 			room: this.room,
-			player: player,
+			player: this.player,
 			dice: [{
 				numberOfDice: parseInt(formValues.numberOfDice),
 				numberOfSides: parseInt(formValues.numberOfSides)
