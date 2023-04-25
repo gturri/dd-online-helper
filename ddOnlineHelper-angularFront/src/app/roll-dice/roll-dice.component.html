@@ -1,4 +1,4 @@
-<div>Ready to roll the dice {{this.player}}</div>
+<div>Ready to roll the dice <span data-cy="player">{{this.player}}</span></div>
 <form [formGroup]="rollForm" (ngSubmit)="onSubmit()">
 	<div>
 		<label for="numberOfDice">

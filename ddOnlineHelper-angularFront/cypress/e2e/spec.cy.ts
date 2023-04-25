@@ -5,8 +5,8 @@ describe('template spec', () => {
 		isWelcomePage(cy);
 
 		moveToRoomAsPlayer(cy, "toto", "myroom");
-		cy.contains("toto");
-		cy.contains("myroom");
+		cy.get('[data-cy="player"]').contains('toto');
+		cy.get('[data-cy="room"]').contains('myroom');
 	}),
 
 	it('Is redirected to welcome page if player is unknown', () => {
