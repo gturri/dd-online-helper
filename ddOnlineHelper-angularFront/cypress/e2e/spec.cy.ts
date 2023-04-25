@@ -22,7 +22,7 @@ function isWelcomePage(cy) {
 }
 
 function moveToRoomAsPlayer(cy, player: string, room: string) {
-	cy.get("#player").type(player);
-	cy.get("#room").type(room);
-	cy.get(".button").click();
+	cy.get('[data-cy="player"]').type(player);
+	cy.get('[data-cy="room"]').type(room);
+	cy.get('[data-cy="submit"]').click();
 }
