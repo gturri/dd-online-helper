@@ -7,7 +7,7 @@
 <app-roll-dice [room]="room" (needToReloadEvenNotification)="getEvents()"></app-roll-dice>
 
 <ul>
-<li *ngFor="let event of this.events">
-{{event.timestamp}}: {{event.text}}
+<li *ngFor="let event of this.events; index as i">
+<span [attr.data-cy]="'message-' + i">{{event.timestamp}}: {{event.text}}</span>
 </li>
 </ul>

@@ -1,5 +1,15 @@
 describe('template spec', () => {
 	it('Can go to a room as a player', () => {
+		// Setup
+		cy.intercept({
+			method: 'GET',
+			url: '/api/last-events?room=myroom*',
+		},
+		[
+			{id: 666, timestamp: '1682511215', text: 'some message'},
+			{id: 667, timestamp: '1682511216', text: 'some other message'},
+		]);
+
 		//test
 		cy.visit('')
 		isWelcomePage(cy);
@@ -7,6 +17,9 @@ describe('template spec', () => {
 		moveToRoomAsPlayer(cy, "toto", "myroom");
 		cy.get('[data-cy="player"]').contains('toto');
 		cy.get('[data-cy="room"]').contains('myroom');
+
+		cy.get('[data-cy="message-0"]').contains('some message');
+		cy.get('[data-cy="message-1"]').contains('some other message');
 	}),
 
 	it('Is redirected to welcome page if player is unknown', () => {
