@@ -1,5 +1,13 @@
 describe('template spec', () => {
 	it('Can go to a room as a player', () => {
+		//setup
+		cy.intercept({
+			method: 'GET',
+			url: '/api/last-events*',
+		},
+		[]);
+
+		//test
 		cy.visit('')
 		isWelcomePage(cy);
 
