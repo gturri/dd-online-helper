@@ -46,6 +46,29 @@ describe('template spec', () => {
 		cy.visit('');
 		cy.get('[data-cy="player"]').should('have.value', 'titi');
 	})
+
+	it('reloads messages even after a query to the server failed', () => {
+		// Setup
+		cy.intercept({
+			method: 'GET',
+			url: '/api/last-events?room=myroom*',
+		},[
+			{id: 666, timestamp: '1682511215', text: 'some message'},
+		]).as('subsequentSuccessfulCalls');
+		cy.intercept({
+			method: 'GET',
+			url: '/api/last-events?room=myroom*',
+			times: 1,
+		}, {forceNetworkError: true}).as('forcedError');
+
+		// Test
+		cy.visit('');
+		moveToRoomAsPlayer(cy, "toto", "myroom");
+
+		cy.wait('@forcedError');
+		cy.wait('@subsequentSuccessfulCalls');
+		cy.get('[data-cy="message-0"]').contains('some message');
+	});
 })
 
 function isWelcomePage(cy) {
