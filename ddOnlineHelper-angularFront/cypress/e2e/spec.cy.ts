@@ -8,7 +8,7 @@ describe('template spec', () => {
 		[
 			{id: 666, timestamp: '1682511215', text: 'some message'},
 			{id: 667, timestamp: '1682511216', text: 'some other message'},
-		]);
+		]).as('getMessages');
 
 		//test
 		cy.visit('')
@@ -18,6 +18,7 @@ describe('template spec', () => {
 		cy.get('[data-cy="player"]').invoke('text').should('eq', 'toto');
 		cy.get('[data-cy="room"]').invoke('text').should('eq', 'myroom');
 
+		cy.wait("@getMessages");
 		cy.get('[data-cy="message-0"]').contains('some message');
 		cy.get('[data-cy="message-1"]').contains('some other message');
 	}),
