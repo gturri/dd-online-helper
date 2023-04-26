@@ -16,5 +16,13 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
+beforeEach(() => {
+	cy.intercept({
+		method: 'GET',
+		url: '/api/last-events*',
+	},
+	[]);
+});
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
