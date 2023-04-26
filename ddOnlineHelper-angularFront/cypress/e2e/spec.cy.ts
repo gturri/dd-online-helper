@@ -15,8 +15,8 @@ describe('template spec', () => {
 		isWelcomePage(cy);
 
 		moveToRoomAsPlayer(cy, "toto", "myroom");
-		cy.get('[data-cy="player"]').contains('toto');
-		cy.get('[data-cy="room"]').contains('myroom');
+		cy.get('[data-cy="player"]').invoke('text').should('eq', 'toto');
+		cy.get('[data-cy="room"]').invoke('text').should('eq', 'myroom');
 
 		cy.get('[data-cy="message-0"]').contains('some message');
 		cy.get('[data-cy="message-1"]').contains('some other message');
@@ -32,8 +32,8 @@ describe('template spec', () => {
 		moveToRoomAsPlayer(cy, "titi", "myroom");
 
 		cy.visit('/room/anyroom');
-		cy.contains("titi");
-		cy.contains("anyroom");
+		cy.get('[data-cy="player"]').invoke('text').should('eq', 'titi');
+		cy.get('[data-cy="room"]').invoke('text').should('eq', 'anyroom');
 	})
 
 	it('Has player field pre-filled on welcome page if user is already known', () => {
