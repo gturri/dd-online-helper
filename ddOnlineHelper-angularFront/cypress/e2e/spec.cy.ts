@@ -62,13 +62,18 @@ describe('template spec', () => {
 			method: 'GET',
 			url: '/api/last-events?room=myroom*',
 			times: 1,
-		}, {forceNetworkError: true}).as('forcedError');
+		}, {statusCode: 500}).as('forcedError');
+
+		cy.clock();
 
 		// Test
 		cy.visit('');
 		moveToRoomAsPlayer(cy, "toto", "myroom");
 
 		cy.wait('@forcedError');
+		cy.get('[data-cy="messages"] li').should('have.length', 0);
+
+		cy.tick(1001);
 		cy.wait('@subsequentSuccessfulCalls');
 		cy.get('[data-cy="messages"] li').should('have.length', 1);
 	});
