@@ -3,8 +3,7 @@ describe('template spec', () => {
 		// Setup
 		cy.intercept({
 			method: 'GET',
-			url: '/api/last-events?room=myroom*',
-			times: 1
+			url: '/api/last-events?room=myroom*'
 		},
 		[
 			{id: 666, timestamp: '1682511215', text: 'some message'},
