@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { RoomComponent } from './room/room.component';
@@ -38,7 +39,8 @@ export function apiConfigFactory (): Configuration {
 			{ path: 'room/:roomId', component: RoomComponent},
 			{ path: '**', component: WelcomeComponent},
 		]),
-  BrowserAnimationsModule
+	BrowserAnimationsModule,
+	MatTableModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent]
