@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { DefaultService } from '../generated/api/default.service';
@@ -13,7 +13,7 @@ import { catchError, retry } from 'rxjs/operators';
 	templateUrl: './room.component.html',
 	styleUrls: ['./room.component.css']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
 	events: Array<ApiLastEventsGet200ResponseInner>;
 	timeoutId = 0;
 	room = "";
@@ -40,6 +40,10 @@ export class RoomComponent implements OnInit {
 			this.room = room;
 			this.getEvents();
 		}
+	}
+
+	ngOnDestroy() {
+		clearTimeout(this.timeoutId);
 	}
 
 	navigateToMainPage() {
