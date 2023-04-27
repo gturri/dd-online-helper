@@ -1,14 +1,28 @@
 describe('template spec', () => {
-	it('Can go to a room as a player', () => {
+	it('Can go to a room as a player, get the existing messages and then get subsequent new messages', () => {
 		// Setup
 		cy.intercept({
 			method: 'GET',
 			url: '/api/last-events?room=myroom*',
+			times: 1
 		},
 		[
 			{id: 666, timestamp: '1682511215', text: 'some message'},
 			{id: 667, timestamp: '1682511216', text: 'some other message'},
-		]).as('getMessages');
+			{id: 668, timestamp: '1682511217', text: 'third message'},
+		]).as('subsequentQueriesToGetMessages');
+
+		cy.intercept({
+			method: 'GET',
+			url: '/api/last-events?room=myroom*',
+			times: 1
+		},
+		[
+			{id: 666, timestamp: '1682511215', text: 'some message'},
+			{id: 667, timestamp: '1682511216', text: 'some other message'},
+		]).as('firstQueryToGetMessages');
+
+		cy.clock();
 
 		//test
 		cy.visit('')
@@ -18,11 +32,20 @@ describe('template spec', () => {
 		cy.get('[data-cy="player"]').should('have.text', 'toto');
 		cy.get('[data-cy="room"]').should('have.text', 'myroom');
 
-		cy.wait("@getMessages");
+		cy.wait("@firstQueryToGetMessages");
 		cy.get('[data-cy="messages"] li').should(($messages) => {
 			expect($messages).to.have.length(2)
 			expect($messages.eq(0)).to.contain('some message')
 			expect($messages.eq(1)).to.contain('some other message')
+		})
+
+		cy.tick(1001);
+		cy.wait("@subsequentQueriesToGetMessages");
+		cy.get('[data-cy="messages"] li').should(($messages) => {
+			expect($messages).to.have.length(3)
+			expect($messages.eq(0)).to.contain('some message')
+			expect($messages.eq(1)).to.contain('some other message')
+			expect($messages.eq(2)).to.contain('third message')
 		})
 	}),
 
