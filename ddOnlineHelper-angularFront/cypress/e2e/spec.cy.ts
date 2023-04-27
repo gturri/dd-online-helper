@@ -19,8 +19,11 @@ describe('template spec', () => {
 		cy.get('[data-cy="room"]').should('have.text', 'myroom');
 
 		cy.wait("@getMessages");
-		cy.get('[data-cy="message-0"]').contains('some message');
-		cy.get('[data-cy="message-1"]').contains('some other message');
+		cy.get('[data-cy="messages"] li').should(($messages) => {
+			expect($messages).to.have.length(2)
+			expect($messages.eq(0)).to.contain('some message')
+			expect($messages.eq(1)).to.contain('some other message')
+		})
 	}),
 
 	it('Is redirected to welcome page if player is unknown', () => {
@@ -67,7 +70,7 @@ describe('template spec', () => {
 
 		cy.wait('@forcedError');
 		cy.wait('@subsequentSuccessfulCalls');
-		cy.get('[data-cy="message-0"]').contains('some message');
+		cy.get('[data-cy="messages"] li').should('have.length', 1);
 	});
 })
 
