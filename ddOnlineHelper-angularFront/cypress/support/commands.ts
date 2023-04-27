@@ -35,3 +35,15 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('isWelcomePage', () => {
+	cy.url().should('equal', cy.config("baseUrl") + "/");
+	cy.get("#player");
+	cy.get("#room");
+})
+
+Cypress.Commands.add('moveToRoomAsPlayer', (player: string, room: string) => {
+	cy.get('[data-cy="player"]').type(player);
+	cy.get('[data-cy="room"]').type(room);
+	cy.get('[data-cy="submit"]').click();
+})

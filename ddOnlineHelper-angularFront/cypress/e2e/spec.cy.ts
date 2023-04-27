@@ -26,9 +26,9 @@ describe('template spec', () => {
 
 		//test
 		cy.visit('')
-		isWelcomePage(cy);
+		cy.isWelcomePage();
 
-		moveToRoomAsPlayer(cy, "toto", "myroom");
+		cy.moveToRoomAsPlayer("toto", "myroom");
 		cy.get('[data-cy="player"]').should('have.text', 'toto');
 		cy.get('[data-cy="room"]').should('have.text', 'myroom');
 
@@ -51,12 +51,12 @@ describe('template spec', () => {
 
 	it('Is redirected to welcome page if player is unknown', () => {
 		cy.visit('/room/myroom')
-		isWelcomePage(cy);
+		cy.isWelcomePage();
 	}),
 
 	it('Can go directly to any room if user is already known', () => {
 		cy.visit('');
-		moveToRoomAsPlayer(cy, "titi", "myroom");
+		cy.moveToRoomAsPlayer("titi", "myroom");
 
 		cy.visit('/room/anyroom');
 		cy.get('[data-cy="player"]').should('have.text', 'titi');
@@ -67,7 +67,7 @@ describe('template spec', () => {
 		cy.visit('');
 		// Pre-condition
 		cy.get('[data-cy="player"]').should('not.have.value', 'titi');
-		moveToRoomAsPlayer(cy, "titi", "myroom");
+		cy.moveToRoomAsPlayer("titi", "myroom");
 
 		cy.visit('');
 		cy.get('[data-cy="player"]').should('have.value', 'titi');
@@ -91,7 +91,7 @@ describe('template spec', () => {
 
 		// Test
 		cy.visit('');
-		moveToRoomAsPlayer(cy, "toto", "myroom");
+		cy.moveToRoomAsPlayer("toto", "myroom");
 
 		cy.wait('@forcedError');
 		cy.get('[data-cy="messages"] li').should('have.length', 0);
@@ -101,15 +101,3 @@ describe('template spec', () => {
 		cy.get('[data-cy="messages"] li').should('have.length', 1);
 	});
 })
-
-function isWelcomePage(cy) {
-	cy.url().should('equal', cy.config("baseUrl") + "/");
-	cy.get("#player");
-	cy.get("#room");
-}
-
-function moveToRoomAsPlayer(cy, player: string, room: string) {
-	cy.get('[data-cy="player"]').type(player);
-	cy.get('[data-cy="room"]').type(room);
-	cy.get('[data-cy="submit"]').click();
-}
