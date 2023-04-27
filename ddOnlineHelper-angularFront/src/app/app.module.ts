@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { RoomComponent } from './room/room.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { RollDiceComponent } from './roll-dice/roll-dice.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function apiConfigFactory (): Configuration {
 	let host = window.location.host;
@@ -36,7 +37,8 @@ export function apiConfigFactory (): Configuration {
 		RouterModule.forRoot([
 			{ path: 'room/:roomId', component: RoomComponent},
 			{ path: '**', component: WelcomeComponent},
-		])
+		]),
+  BrowserAnimationsModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]
