@@ -47,3 +47,7 @@ Cypress.Commands.add('moveToRoomAsPlayer', (player: string, room: string) => {
 	cy.get('[data-cy="room"]').type(room);
 	cy.get('[data-cy="submit"]').click();
 })
+
+Cypress.Commands.add('getMessages', () => {
+	cy.get('[data-cy="messages"] tbody tr');
+})

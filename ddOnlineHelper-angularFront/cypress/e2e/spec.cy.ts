@@ -32,7 +32,7 @@ describe('template spec', () => {
 		cy.get('[data-cy="room"]').should('have.text', 'myroom');
 
 		cy.wait("@firstQueryToGetMessages");
-		cy.get('[data-cy="messages"] tbody tr').should(($messages) => {
+		cy.getMessages().should(($messages) => {
 			expect($messages).to.have.length(2)
 			expect($messages.eq(0)).to.contain('some message')
 			expect($messages.eq(1)).to.contain('some other message')
@@ -40,7 +40,7 @@ describe('template spec', () => {
 
 		cy.tick(1001);
 		cy.wait("@subsequentQueriesToGetMessages");
-		cy.get('[data-cy="messages"] tbody tr').should(($messages) => {
+		cy.getMessages().should(($messages) => {
 			expect($messages).to.have.length(3)
 			expect($messages.eq(0)).to.contain('some message')
 			expect($messages.eq(1)).to.contain('some other message')
@@ -93,10 +93,10 @@ describe('template spec', () => {
 		cy.moveToRoomAsPlayer("toto", "myroom");
 
 		cy.wait('@forcedError');
-		cy.get('[data-cy="messages"] tbody tr').should('have.length', 0);
+		cy.getMessages().should('have.length', 0);
 
 		cy.tick(1001);
 		cy.wait('@subsequentSuccessfulCalls');
-		cy.get('[data-cy="messages"] tbody tr').should('have.length', 1);
+		cy.getMessages().should('have.length', 1);
 	});
 })
