@@ -16,6 +16,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 	events: Array<ApiLastEventsGet200ResponseInner>;
 	timeoutId = 0;
 	room = "";
+	lastEventId = -1;
 
 	constructor(
 			private http: DefaultService,
@@ -55,7 +56,19 @@ export class RoomComponent implements OnInit, OnDestroy {
 		let self = this;
 		obs.subscribe({
 				next(events) {
-					self.events = events
+					let maxId = self.lastEventId;
+					let newEvents: Array<ApiLastEventsGet200ResponseInner> = [];
+					events.forEach((ev) => {
+						if ( ev.id > self.lastEventId ) {
+							newEvents.push(ev);
+						}
+						maxId = Math.max(ev.id, maxId);
+					});
+					self.lastEventId = maxId;
+					if (newEvents.length != 0) {
+						self.events = newEvents.concat(self.events);
+					}
+
 					clearTimeout(self.timeoutId);
 					self.timeoutId = setTimeout(() => {self.getEvents()}, 1000);
 				},

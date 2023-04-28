@@ -6,9 +6,9 @@ describe('template spec', () => {
 			url: '/api/last-events?room=myroom*'
 		},
 		[
-			{id: 666, timestamp: '1682511215', text: 'some message'},
-			{id: 667, timestamp: '1682511216', text: 'some other message'},
 			{id: 668, timestamp: '1682511217', text: 'third message'},
+			{id: 667, timestamp: '1682511216', text: 'some other message'},
+			{id: 666, timestamp: '1682511215', text: 'some message'},
 		]).as('subsequentQueriesToGetMessages');
 
 		cy.intercept({
@@ -17,8 +17,8 @@ describe('template spec', () => {
 			times: 1
 		},
 		[
-			{id: 666, timestamp: '1682511215', text: 'some message'},
 			{id: 667, timestamp: '1682511216', text: 'some other message'},
+			{id: 666, timestamp: '1682511215', text: 'some message'},
 		]).as('firstQueryToGetMessages');
 
 		cy.clock();
@@ -34,17 +34,17 @@ describe('template spec', () => {
 		cy.wait("@firstQueryToGetMessages");
 		cy.get('[data-cy="messages"] li').should(($messages) => {
 			expect($messages).to.have.length(2)
-			expect($messages.eq(0)).to.contain('some message')
-			expect($messages.eq(1)).to.contain('some other message')
+			expect($messages.eq(0)).to.contain('some other message')
+			expect($messages.eq(1)).to.contain('some message')
 		})
 
 		cy.tick(1001);
 		cy.wait("@subsequentQueriesToGetMessages");
 		cy.get('[data-cy="messages"] li').should(($messages) => {
 			expect($messages).to.have.length(3)
-			expect($messages.eq(0)).to.contain('some message')
+			expect($messages.eq(0)).to.contain('third message')
 			expect($messages.eq(1)).to.contain('some other message')
-			expect($messages.eq(2)).to.contain('third message')
+			expect($messages.eq(2)).to.contain('some message')
 		})
 	}),
 
