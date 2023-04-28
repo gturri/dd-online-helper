@@ -18,3 +18,4 @@
 	<tr mat-header-row *matHeaderRowDef="['date', 'message']"></tr>
 	<tr mat-row *matRowDef="let row; columns: ['date', 'message']"></tr>
 </table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page"></mat-paginator>

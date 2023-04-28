@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
 import { RoomComponent } from './room/room.component';
@@ -41,6 +42,7 @@ export function apiConfigFactory (): Configuration {
 		]),
 	BrowserAnimationsModule,
 	MatTableModule,
+	MatPaginatorModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent]

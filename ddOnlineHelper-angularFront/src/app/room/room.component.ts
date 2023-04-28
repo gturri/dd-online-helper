@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { DefaultService } from '../generated/api/default.service';
@@ -14,10 +15,11 @@ import { catchError, retry } from 'rxjs/operators';
 	templateUrl: './room.component.html',
 	styleUrls: ['./room.component.css']
 })
-export class RoomComponent implements OnInit, OnDestroy {
-	events: Array<ApiLastEventsGet200ResponseInner>;
+export class RoomComponent implements OnInit, OnDestroy, AfterViewInit {
+	events: MatTableDataSource<ApiLastEventsGet200ResponseInner>;
 	timeoutId = 0;
 	room = "";
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	constructor(
 			private http: DefaultService,
@@ -25,7 +27,11 @@ export class RoomComponent implements OnInit, OnDestroy {
 			private route: ActivatedRoute,
 			private router: Router
 			) {
-		this.events = [];
+		this.events = new MatTableDataSource<ApiLastEventsGet200ResponseInner>([]);
+	}
+
+	ngAfterViewInit() {
+		this.events.paginator = this.paginator;
 	}
 
 	ngOnInit() {
@@ -57,7 +63,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 		let self = this;
 		obs.subscribe({
 				next(events) {
-					self.events = events
+					self.events.data = events
 					clearTimeout(self.timeoutId);
 					self.timeoutId = window.setTimeout(() => {self.getEvents()}, 1000);
 				},
