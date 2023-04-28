@@ -27,6 +27,7 @@
             "styles": [
               "src/styles.css"
             ],
+            "localize": true,
             "scripts": []
           },
           "configurations": {
@@ -52,7 +53,24 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "fr": {
+              "localize": ["fr"],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
             }
+          }
           },
           "defaultConfiguration": "production"
         },
@@ -90,6 +108,14 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        }
+        "i18n": {
+          "sourceLocale": "en-US",
+          "locales": {
+            "fr": {
+              "translation": "src/locale/messages.fr.xlf"
+            }
           }
         }
       }
