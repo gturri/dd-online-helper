@@ -27,6 +27,7 @@
     "@angular-devkit/build-angular": "^15.2.4",
     "@angular/cli": "~15.2.4",
     "@angular/compiler-cli": "^15.2.0",
+    "@angular/localize": "^15.2.6",
     "@types/jasmine": "~4.3.0",
     "cypress": "^12.10.0",
     "jasmine-core": "~4.5.0",
