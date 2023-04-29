@@ -23,10 +23,10 @@ import { catchError, retry } from 'rxjs/operators';
 })
 export class RoomComponent implements OnInit, OnDestroy {
 	events: Array<ApiLastEventsGet200ResponseInner> = [];
-	newEvents: Array<ApiLastEventsGet200ResponseInner> = [];
 	timeoutId = 0;
 	room = "";
 	lastEventId = -1;
+	firstMessagesAlreadyRetrieved = false;
 	firstMessagesAlreadyDisplayed = false;
 
 
@@ -66,28 +66,22 @@ export class RoomComponent implements OnInit, OnDestroy {
 		let self = this;
 		obs.subscribe({
 				next(events) {
-					let maxId = self.lastEventId;
-					let newEvents: Array<ApiLastEventsGet200ResponseInner> = [];
-					events.forEach((ev) => { // TODO: this loop is pointless in the case where self.firstMessagesAlreadyDisplayed is false (because in this case we should keep all events);
-						if ( ev.id > self.lastEventId ) {
-							newEvents.push(ev);
-						}
-						maxId = Math.max(ev.id, maxId);
-					});
-					self.lastEventId = maxId;
-					if (!self.firstMessagesAlreadyDisplayed) {
-						self.firstMessagesAlreadyDisplayed = true;
-						self.events = newEvents;
-						self.scheduleNewGetEvents();
-					}
-					else if (newEvents.length != 0) {
-						self.newEvents = newEvents;
-						console.log("[" + Date.now() + "] got " + self.newEvents.length + " new events");
-						setTimeout(() => {self.displayNewMessages()}, 600);
+					if (!self.firstMessagesAlreadyRetrieved) {
+						self.firstMessagesAlreadyRetrieved = true;
+						self.events = events;
+						self.events.forEach((ev) => self.lastEventId = Math.max(self.lastEventId, ev.id));
 					} else {
-						console.log("[" + Date.now() + "] got no new events (or it's the first time we get messages)");
-						self.scheduleNewGetEvents();
+						self.firstMessagesAlreadyDisplayed = true; // Activate the animations for messages displayed
+						let lastEventId = self.lastEventId;
+						events.forEach((ev) => {
+								self.lastEventId = Math.max(self.lastEventId, ev.id);
+						});
+						// Don't do "self.events = events" otherwise existing messages will be re-created, which
+						// will trigger the :enter animation even for existing messages
+						self.events = events.filter((ev) => ev.id > lastEventId).concat(self.events);
 					}
+
+					self.scheduleNewGetEvents();
 				},
 				error(err) {
 					console.error("Failed to get data: " + err);
@@ -96,12 +90,6 @@ export class RoomComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	displayNewMessages() {
-		console.log("[" + Date.now() + "] new messages have been displayed");
-		this.events = this.newEvents.concat(this.events);
-		this.newEvents = [];
-		this.scheduleNewGetEvents(); //TODO: it should be scheduled to start immediately
-	}
 
 	scheduleNewGetEvents() {
 		clearTimeout(this.timeoutId);

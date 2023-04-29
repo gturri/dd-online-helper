@@ -6,11 +6,8 @@
 
 <app-roll-dice [room]="room" (needToReloadEvenNotification)="getEvents()"></app-roll-dice>
 
-<ul data-cy="messages">
-	<li @newMessage *ngFor="let event of this.newEvents">
-		<span>{{event.timestamp}}: {{event.text}}</span>
-	</li>
-	<li *ngFor="let event of this.events">
+<ul data-cy="messages" [@.disabled]="!firstMessagesAlreadyDisplayed">
+	<li @newMessage *ngFor="let event of this.events">
 		<span>{{event.timestamp}}: {{event.text}}</span>
 	</li>
 </ul>
