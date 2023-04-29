@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ApiModule, Configuration, ConfigurationParameters } from 'ddOnlineHelperClient';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -28,6 +29,7 @@ export function apiConfigFactory (): Configuration {
 	],
 	imports: [
 		BrowserModule,
+		BrowserAnimationsModule,
 		ApiModule.forRoot(apiConfigFactory),
 		HttpClientModule,
 		FormsModule,
