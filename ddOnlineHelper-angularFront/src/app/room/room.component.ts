@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
-import { trigger, state, transition, animate, style} from '@angular/animations';
+import { trigger, state, transition, animate, style, keyframes} from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { DefaultService, ApiLastEventsGet200ResponseInner} from 'ddOnlineHelperClient';
@@ -16,7 +16,12 @@ import { catchError, retry } from 'rxjs/operators';
 		trigger('newMessage', [
 			transition(':enter', [
 				style({backgroundColor: 'yellow'}),
-				animate('500ms', style({backgroundColor: 'inherit'}))
+				animate('3000ms', keyframes([
+					style({opacity:0}),
+					style({opacity:1}),
+					style({backgroundColor:'yellow'}),
+					style({backgroundColor: 'inherit'})
+				]))
 			])
 		])
 	]
