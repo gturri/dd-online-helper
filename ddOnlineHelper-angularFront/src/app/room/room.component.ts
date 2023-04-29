@@ -14,13 +14,11 @@ import { catchError, retry } from 'rxjs/operators';
 	styleUrls: ['./room.component.css'],
 	animations: [
 		trigger('newMessage', [
-			state('closed', style({
-				opacity: 0,
-			})),
-			state('open', style({
-				opacity: 'inherit',
-			})),
-			transition('closed => open', [animate('500ms')])
+			state('open', style({opacity: 'inherit'})),
+			transition('void => *', [
+				style({opacity: 0}),
+				animate('500ms')
+			])
 		])
 	]
 })
@@ -70,24 +68,27 @@ export class RoomComponent implements OnInit, OnDestroy {
 		obs.subscribe({
 				next(events) {
 					let maxId = self.lastEventId;
-					self.newEvents = [];
-					events.forEach((ev) => {
+					let newEvents: Array<ApiLastEventsGet200ResponseInner> = [];
+					events.forEach((ev) => { // TODO: this loop is pointless in the case where self.firstMessagesAlreadyDisplayed is false (because in this case we should keep all events);
 						if ( ev.id > self.lastEventId ) {
-							self.newEvents.push(ev);
+							newEvents.push(ev);
 						}
 						maxId = Math.max(ev.id, maxId);
 					});
 					self.lastEventId = maxId;
-					if (self.newEvents.length != 0 && self.firstMessagesAlreadyDisplayed) {
-						console.log("[" + Date.now() + "] got " + self.newEvents.length + " new events");
-						self.displayedNewMessages = false;
-						setTimeout(() => {self.displayNewMessages()}, 1);
-					} else {
-						console.log("[" + Date.now() + "] got no new events (or it's the first time we get messages)");
-						self.events = events;
+					if (!self.firstMessagesAlreadyDisplayed) {
+						self.firstMessagesAlreadyDisplayed = true;
+						self.events = newEvents;
 						self.scheduleNewGetEvents();
 					}
-					self.firstMessagesAlreadyDisplayed = true;
+					else if (newEvents.length != 0) {
+						self.newEvents = newEvents;
+						console.log("[" + Date.now() + "] got " + self.newEvents.length + " new events");
+						setTimeout(() => {self.displayNewMessages()}, 600);
+					} else {
+						console.log("[" + Date.now() + "] got no new events (or it's the first time we get messages)");
+						self.scheduleNewGetEvents();
+					}
 				},
 				error(err) {
 					console.error("Failed to get data: " + err);
@@ -97,17 +98,10 @@ export class RoomComponent implements OnInit, OnDestroy {
 	}
 
 	displayNewMessages() {
-		console.log("[" + Date.now() + "] going to display the new messages");
-		if (this.displayedNewMessages) {
-			console.error("called displayNewMessages but this.displayedNewMessages is already true");
-		}
-		this.displayedNewMessages = true;
-		setTimeout(() => {
 		console.log("[" + Date.now() + "] new messages have been displayed");
-			this.events = this.newEvents.concat(this.events);
-			this.newEvents = [];
-			this.scheduleNewGetEvents(); //TODO: it should be scheduled to start immediately
-		}, 1000);
+		this.events = this.newEvents.concat(this.events);
+		this.newEvents = [];
+		this.scheduleNewGetEvents(); //TODO: it should be scheduled to start immediately
 	}
 
 	scheduleNewGetEvents() {
