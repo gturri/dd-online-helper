@@ -14,10 +14,9 @@ import { catchError, retry } from 'rxjs/operators';
 	styleUrls: ['./room.component.css'],
 	animations: [
 		trigger('newMessage', [
-			state('open', style({opacity: 'inherit'})),
-			transition('void => *', [
-				style({opacity: 0}),
-				animate('500ms')
+			transition(':enter', [
+				style({backgroundColor: 'yellow'}),
+				animate('500ms', style({backgroundColor: 'inherit'}))
 			])
 		])
 	]
