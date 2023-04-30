@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { DefaultService, ApiLastEventsGet200ResponseInner} from 'ddOnlineHelperClient';
+import { DefaultService } from '../generated/api/default.service';
+import { ApiLastEventsGet200ResponseInner} from '../generated/model/apiLastEventsGet200ResponseInner'
 import { CoordinateService } from '../coordinate.service';
 import { Observable } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';

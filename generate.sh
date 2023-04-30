@@ -8,9 +8,8 @@ THIS_DIR="$(dirname "$THIS_FILE")"
 BIN_DIR="$THIS_DIR/bin"
 OAG_JAR="$BIN_DIR/openapi-generator-cli.jar"
 OAS_FILE="$THIS_DIR/openapi.yaml"
-GENERATED_DIR="$THIS_DIR/generated"
-CLIENT_DIR="$GENERATED_DIR/angular-client"
 FRONT_DIR="$THIS_DIR/ddOnlineHelper-angularFront"
+CLIENT_DIR="$FRONT_DIR/src/app/generated"
 GIT_USER_ID=gturri
 GIT_PROJECT=dd-online-helper
 
@@ -20,21 +19,12 @@ if [ ! -e "$OAG_JAR" ]; then
 fi
 
 echo "Generating the client"
-java -jar "$OAG_JAR" generate -i "$OAS_FILE" -g typescript-angular -o "$CLIENT_DIR" -p npmName=ddOnlineHelperClient
-
-echo "Building the client"
-pushd "$CLIENT_DIR"
-npm install
-npm run build
-cd dist
-npm link
-popd
+java -jar "$OAG_JAR" generate -i "$OAS_FILE" -g typescript-angular -o "$CLIENT_DIR"
 
 echo "building the front"
 pushd "$FRONT_DIR"
-npm link ddOnlineHelperClient
 ./build.sh
 popd
 
 echo "Generating the server module"
-java -jar "$OAG_JAR" generate --git-user-id "$GIT_USER_ID" --git-repo-id "$GIT_PROJECT" -i "$OAS_FILE" -g php-symfony -o "$GENERATED_DIR/php-server-bundle"
+java -jar "$OAG_JAR" generate --git-user-id "$GIT_USER_ID" --git-repo-id "$GIT_PROJECT" -i "$OAS_FILE" -g php-symfony -o "$THIS_DIR/generated/php-server-bundle"

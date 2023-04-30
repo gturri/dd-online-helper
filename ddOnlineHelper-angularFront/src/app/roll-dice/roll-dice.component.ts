@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { DefaultService, ApiDicePostRequest } from 'ddOnlineHelperClient';
+import { DefaultService } from '../generated/api/default.service';
+import { ApiDicePostRequest } from '../generated/model/apiDicePostRequest';
 import { Observable } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
