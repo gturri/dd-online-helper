@@ -9,5 +9,6 @@ php-server/public/main.*
 php-server/public/polyfills.*
 php-server/public/runtime.*
 php-server/public/styles.*
+php-server/public/assets
 generated
 

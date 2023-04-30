@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { ApiModule } from './generated/api.module';
 import { Configuration, ConfigurationParameters } from './generated/configuration';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { RoomComponent } from './room/room.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { RollDiceComponent } from './roll-dice/roll-dice.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 export function apiConfigFactory (): Configuration {
 	let host = window.location.host;
@@ -36,7 +37,13 @@ export function apiConfigFactory (): Configuration {
 		RouterModule.forRoot([
 			{ path: 'room/:roomId', component: RoomComponent},
 			{ path: '**', component: WelcomeComponent},
-		])
+		]),
+  ServiceWorkerModule.register('ngsw-worker.js', {
+    enabled: !isDevMode(),
+    // Register the ServiceWorker as soon as the application is stable
+    // or after 30 seconds (whichever comes first).
+    registrationStrategy: 'registerWhenStable:30000'
+  })
 	],
 	providers: [],
 	bootstrap: [AppComponent]
