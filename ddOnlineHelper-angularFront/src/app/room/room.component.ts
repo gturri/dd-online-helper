@@ -54,11 +54,11 @@ export class RoomComponent implements OnInit {
 		obs.subscribe({
 				next(events) {
 					self.events = events
-					self.timeoutId = setTimeout(() => {self.getEvents()}, 1000);
+					self.timeoutId = window.setTimeout(() => {self.getEvents()}, 1000);
 				},
 				error(err) {
 					console.error("Failed to get data: " + err);
-					self.timeoutId = setTimeout(() => {self.getEvents()}, 1000);
+					self.timeoutId = window.setTimeout(() => {self.getEvents()}, 1000);
 				}
 		});
 	}
