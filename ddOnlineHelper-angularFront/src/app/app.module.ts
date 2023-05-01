@@ -29,7 +29,7 @@ export function apiConfigFactory (): Configuration {
 		RollDiceComponent
 	],
 	imports: [
-		BrowserModule,
+		BrowserModule.withServerTransition({ appId: 'serverApp' }),
 		ApiModule.forRoot(apiConfigFactory),
 		HttpClientModule,
 		FormsModule,
@@ -43,7 +43,8 @@ export function apiConfigFactory (): Configuration {
     // Register the ServiceWorker as soon as the application is stable
     // or after 30 seconds (whichever comes first).
     registrationStrategy: 'registerWhenStable:30000'
-  })
+  }),
+  RouterModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

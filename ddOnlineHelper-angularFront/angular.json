@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/dd-online-helper-angular-front",
+            "outputPath": "dist/ddOnlineHelper-angularFront/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -95,6 +95,43 @@
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/ddOnlineHelper-angularFront/server",
+            "main": "src/main.server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media"
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "app-shell": {
+          "builder": "@angular-devkit/build-angular:app-shell",
+          "options": {
+            "route": "shell"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ddOnlineHelper-angularFront:build:production",
+              "serverTarget": "ddOnlineHelper-angularFront:server:production"
+            },
+            "development": {
+              "browserTarget": "ddOnlineHelper-angularFront:build:development",
+              "serverTarget": "ddOnlineHelper-angularFront:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
