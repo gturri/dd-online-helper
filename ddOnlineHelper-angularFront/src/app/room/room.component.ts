@@ -51,17 +51,18 @@ export class RoomComponent implements OnInit, OnDestroy {
 	}
 
 	getEvents() {
-		clearTimeout(this.timeoutId);
 		console.log("Going to fetch events for room " + this.room);
 		let obs: Observable<Array<ApiLastEventsGet200ResponseInner>> = this.http.apiLastEventsGet(this.room);
 		let self = this;
 		obs.subscribe({
 				next(events) {
 					self.events = events
+					clearTimeout(self.timeoutId);
 					self.timeoutId = window.setTimeout(() => {self.getEvents()}, 1000);
 				},
 				error(err) {
 					console.error("Failed to get data: " + err);
+					clearTimeout(self.timeoutId);
 					self.timeoutId = window.setTimeout(() => {self.getEvents()}, 1000);
 				}
 		});
