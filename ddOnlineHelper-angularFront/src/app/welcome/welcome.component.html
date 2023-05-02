@@ -3,7 +3,12 @@
 		<label for="player">
 			Player name
 		</label>
-		<input data-cy="player" id="player" type="text" formControlName="player">
+		<mat-autocomplete #auto="matAutocomplete">
+			<mat-option *ngFor="let option of options" [value]="option">
+				{{option}}
+			</mat-option>
+		</mat-autocomplete>
+		<input data-cy="player" id="player" type="text" formControlName="player" matInput [matAutocomplete]="auto">
 	</div>
 
 	<div>

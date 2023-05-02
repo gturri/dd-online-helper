@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoordinateService } from '../coordinate.service';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Injectable()
 @Component({
@@ -15,6 +16,8 @@ export class WelcomeComponent {
 		player: this.coordinateService.getPlayer() ?? '',
 		room: ''
 	});
+
+	options = ["toto", "titi"];
 
 	constructor(
 		private formBuilder: FormBuilder,
