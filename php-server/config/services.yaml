@@ -26,3 +26,6 @@ services:
     Gturri\DdOnlineHelperBundle\Api\DefaultApi:
         tags:
             - { name: "open_api_server.api", api: "default" }
+
+    App\EventListener\StaticRouteListener:
+        tags: [kernel.event_listener]
